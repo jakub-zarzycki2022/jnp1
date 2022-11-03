@@ -7,7 +7,7 @@
 
 #include "hash.h"
 
-namespace util {
+namespace jnp1 {
 
     const std::string sequence_to_string(uint64_t const * seq, size_t size) {
         
@@ -23,10 +23,6 @@ namespace util {
         sequence_string += "\"";
         return sequence_string;
     }
-
-}
-
-namespace jnp1 {
 
     class Sequence {
     public:
@@ -128,7 +124,7 @@ namespace jnp1 {
     haszującej, jeśli tablica haszująca zawiera już taki ciąg, jeśli
             parametr seq ma wartość NULL lub parametr size ma wartość 0. */
     bool hash_insert(unsigned long id, uint64_t const * seq, size_t size) {
-        std::cerr << "hash_insert(" << id << ", " << util::sequence_to_string(seq, size) << ", " << size << ")" << std::endl;
+        std::cerr << "hash_insert(" << id << ", " << sequence_to_string(seq, size) << ", " << size << ")" << std::endl;
         
         if (seq == NULL) {
             std::cerr << "hash_insert: invalid pointer (NULL)" << std::endl;
@@ -150,12 +146,12 @@ namespace jnp1 {
         std::unordered_set<Sequence, Hasher> &set = set_iter->second;
 
         if (set.find(s) != set.end()) {
-            std::cerr << "hash_insert: hash table #" << id << " already contains sequence " << util::sequence_to_string(seq, size) << std::endl;
+            std::cerr << "hash_insert: hash table #" << id << " already contains sequence " << sequence_to_string(seq, size) << std::endl;
             return false;
         }
 
         set.insert(s);
-        std::cerr << "hash_insert: hash table #" << id <<", sequence " << util::sequence_to_string(seq, size) << " inserted" << std::endl;
+        std::cerr << "hash_insert: hash table #" << id <<", sequence " << sequence_to_string(seq, size) << " inserted" << std::endl;
         return true;
     }
 
@@ -165,7 +161,7 @@ namespace jnp1 {
     haszującej, jeśli tablica haszująca nie zawiera takiego ciągu,
     jeśli parametr seq ma wartość NULL lub parametr size ma wartość 0. */
     bool hash_remove(unsigned long id, uint64_t const * seq, size_t size){
-        std::cerr << "hash_remove(" << id << ", " << util::sequence_to_string(seq, size) << ", " << size << ")" << std::endl;
+        std::cerr << "hash_remove(" << id << ", " << sequence_to_string(seq, size) << ", " << size << ")" << std::endl;
 
         if (seq == NULL) {
             std::cerr << "hash_remove: invalid pointer (NULL)" << std::endl;
@@ -187,12 +183,12 @@ namespace jnp1 {
         std::unordered_set<Sequence, Hasher> &set = set_iter->second;
 
         if (set.find(s) == set.end()) {
-            std::cerr << "hash_remove: hash table #" << id << " already contains sequence " << util::sequence_to_string(seq, size) << std::endl;
+            std::cerr << "hash_remove: hash table #" << id << " already contains sequence " << sequence_to_string(seq, size) << std::endl;
             return false;
         }
 
         set.erase(s);
-        std::cerr << "hash_remove: hash table #" << id <<", sequence " << util::sequence_to_string(seq, size) << " removed" << std::endl;
+        std::cerr << "hash_remove: hash table #" << id <<", sequence " << sequence_to_string(seq, size) << " removed" << std::endl;
         return true;
     }
 
@@ -216,7 +212,7 @@ namespace jnp1 {
     false w przeciwnym przypadku oraz gdy parametr seq ma wartość NULL lub
             parametr size ma wartość 0. */
     bool hash_test(unsigned long id, uint64_t const * seq, size_t size) {
-        std::cerr << "hash_test(" << id << ", " << util::sequence_to_string(seq, size) << ", " << size << ")" << std::endl;
+        std::cerr << "hash_test(" << id << ", " << sequence_to_string(seq, size) << ", " << size << ")" << std::endl;
 
         if (seq == NULL) {
             std::cerr << "hash_test: invalid pointer (NULL)" << std::endl;
@@ -238,7 +234,7 @@ namespace jnp1 {
         std::unordered_set<Sequence, Hasher> &set = set_iter->second;
 
         bool contains = set.find(s) != set.end(); 
-        std::cerr << "hash_test: hash table #" << id << ", sequence " << util::sequence_to_string(seq, size) << (contains ? " is present" : " is not present") << std::endl;
+        std::cerr << "hash_test: hash table #" << id << ", sequence " << sequence_to_string(seq, size) << (contains ? " is present" : " is not present") << std::endl;
         return contains;
     }
 }
