@@ -63,8 +63,16 @@ namespace jnp1 {
         }
     };
 
+
+    std::map<unsigned long, std::unordered_set<Sequence, Hasher>>& get_sets() {
+        static auto* sets = new std::map<unsigned long, std::unordered_set<Sequence, Hasher>>();
+        return *sets;
+    }
+
+    #define sets get_sets()
+
     //all sets are stored in set, indexed by order in which they were inserted
-    std::map<unsigned long, std::unordered_set<Sequence, Hasher>> sets;
+    //std::map<unsigned long, std::unordered_set<Sequence, Hasher>> sets;
     unsigned long set_counter = 0;
 
     /*  Tworzy tablicę haszującą i zwraca jej identyfikator. Parametr
