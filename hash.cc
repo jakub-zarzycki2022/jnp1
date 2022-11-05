@@ -76,10 +76,14 @@ namespace jnp1 {
     liczbę uint64_t i ma kolejno parametry uint64_t const * oraz size_t.  */
     unsigned long hash_create(hash_function_t hash_function) {
 
+#ifndef NDEBUG
         std::cerr << "hash_create(" << hash_function << ")" << std::endl;
+#endif
 
         if (hash_function == NULL) {
+#ifndef NDEBUG
             std::cerr << "hash_create: invalid hash_function (NULL)" << std::endl;
+#endif
             return 0;
         }
 
@@ -87,14 +91,18 @@ namespace jnp1 {
         std::unordered_set<Sequence, Hasher> set(0, Hasher(hash_function));
 
         sets.emplace(set_counter, set);
+#ifndef NDEBUG
         std::cerr << "hash_create: hash table #" << set_counter << " created" << std::endl;
+#endif
         return set_counter;
     }
 
     /*Usuwa tablicę haszującą o identyfikatorze id, o ile ona istnieje.
     W przeciwnym przypadku nic nie robi. */
     void hash_delete(unsigned long id) {
+#ifndef NDEBUG
         std::cerr << "hash_delete(" << id << ")" << std::endl;
+#endif
         sets.erase(id);
     }
 
@@ -102,19 +110,25 @@ namespace jnp1 {
             o identyfikatorze id lub 0, jeśli taka tablica nie istnieje. */
     size_t hash_size(unsigned long id) {
 
+#ifndef NDEBUG
         std::cerr << "hash_size(" << id << ")" << std::endl;
+#endif
 
         auto set_iter = sets.find(id);
 
         if (set_iter == sets.end()) {
+#ifndef NDEBUG
             std::cerr << "hash_size: hash table #" << id << " doesn't exist" << std::endl;
+#endif
             return 0;
         }
 
         std::unordered_set<Sequence, Hasher> &set = set_iter->second;
 
-        size_t size = set.size(); 
+        size_t size = set.size();
+#ifndef NDEBUG
         std::cerr << "hash_size: hash table #" << id << " contains " << size << " elements" << std::endl;
+#endif
         return size;
     }
 
@@ -124,21 +138,29 @@ namespace jnp1 {
     haszującej, jeśli tablica haszująca zawiera już taki ciąg, jeśli
             parametr seq ma wartość NULL lub parametr size ma wartość 0. */
     bool hash_insert(unsigned long id, uint64_t const * seq, size_t size) {
+#ifndef NDEBUG
         std::cerr << "hash_insert(" << id << ", " << sequence_to_string(seq, size) << ", " << size << ")" << std::endl;
+#endif
         
         if (seq == NULL) {
+#ifndef NDEBUG
             std::cerr << "hash_insert: invalid pointer (NULL)" << std::endl;
+#endif
             return false;
         }
         if (size == 0) {
+#ifndef NDEBUG
             std::cerr << "hash_insert: invalid size (0)" << std::endl;
+#endif
             return false;
         }
 
         auto set_iter = sets.find(id);
 
         if (set_iter == sets.end()) {
+#ifndef NDEBUG
             std::cerr << "hash_size: hash table #" << id << " doesn't exist" << std::endl;
+#endif
             return false;
         }
 
@@ -146,12 +168,16 @@ namespace jnp1 {
         std::unordered_set<Sequence, Hasher> &set = set_iter->second;
 
         if (set.find(s) != set.end()) {
+#ifndef NDEBUG
             std::cerr << "hash_insert: hash table #" << id << " already contains sequence " << sequence_to_string(seq, size) << std::endl;
+#endif
             return false;
         }
 
         set.insert(s);
+#ifndef NDEBUG
         std::cerr << "hash_insert: hash table #" << id <<", sequence " << sequence_to_string(seq, size) << " inserted" << std::endl;
+#endif
         return true;
     }
 
@@ -161,21 +187,29 @@ namespace jnp1 {
     haszującej, jeśli tablica haszująca nie zawiera takiego ciągu,
     jeśli parametr seq ma wartość NULL lub parametr size ma wartość 0. */
     bool hash_remove(unsigned long id, uint64_t const * seq, size_t size){
+#ifndef NDEBUG
         std::cerr << "hash_remove(" << id << ", " << sequence_to_string(seq, size) << ", " << size << ")" << std::endl;
+#endif
 
         if (seq == NULL) {
+#ifndef NDEBUG
             std::cerr << "hash_remove: invalid pointer (NULL)" << std::endl;
+#endif
             return false;
         }
         if (size == 0) {
+#ifndef NDEBUG
             std::cerr << "hash_remove: invalid size (0)" << std::endl;
+#endif
             return false;
         }
 
         auto set_iter = sets.find(id);
 
         if (set_iter == sets.end()) {
+#ifndef NDEBUG
             std::cerr << "hash_remove: hash table #" << id << " doesn't exist" << std::endl;
+#endif
             return false;
         }
 
@@ -183,23 +217,31 @@ namespace jnp1 {
         std::unordered_set<Sequence, Hasher> &set = set_iter->second;
 
         if (set.find(s) == set.end()) {
+#ifndef NDEBUG
             std::cerr << "hash_remove: hash table #" << id << " already contains sequence " << sequence_to_string(seq, size) << std::endl;
+#endif
             return false;
         }
 
         set.erase(s);
+#ifndef NDEBUG
         std::cerr << "hash_remove: hash table #" << id <<", sequence " << sequence_to_string(seq, size) << " removed" << std::endl;
+#endif
         return true;
     }
 
     /*Jeśli tablica haszująca o identyfikatorze id istnieje i nie jest pusta,
     to usuwa z niej wszystkie elementy. W przeciwnym przypadku nic nie robi. */
     void hash_clear(unsigned long id) {
+#ifndef NDEBUG
         std::cerr << "hash_clear(" << id << ")" << std::endl;
+#endif
         auto set_iter = sets.find(id);
 
         if (set_iter == sets.end()) {
+#ifndef NDEBUG
             std::cerr << "hash_remove: hash table #" << id << " doesn't exist" << std::endl;
+#endif
             return;
         }
 
@@ -212,29 +254,39 @@ namespace jnp1 {
     false w przeciwnym przypadku oraz gdy parametr seq ma wartość NULL lub
             parametr size ma wartość 0. */
     bool hash_test(unsigned long id, uint64_t const * seq, size_t size) {
+#ifndef NDEBUG
         std::cerr << "hash_test(" << id << ", " << sequence_to_string(seq, size) << ", " << size << ")" << std::endl;
+#endif
 
         if (seq == NULL) {
+#ifndef NDEBUG
             std::cerr << "hash_test: invalid pointer (NULL)" << std::endl;
+#endif
             return false;
         }
         if (size == 0) {
+#ifndef NDEBUG
             std::cerr << "hash_test: invalid size (0)" << std::endl;
+#endif
             return false;
         }
 
         auto set_iter = sets.find(id);
 
         if (set_iter == sets.end()) {
+#ifndef NDEBUG
             std::cerr << "hash_test: hash table #" << id << " doesn't exist" << std::endl;
+#endif
             return false;
         }
 
         Sequence s(seq, size);
         std::unordered_set<Sequence, Hasher> &set = set_iter->second;
 
-        bool contains = set.find(s) != set.end(); 
+        bool contains = set.find(s) != set.end();
+#ifndef NDEBUG
         std::cerr << "hash_test: hash table #" << id << ", sequence " << sequence_to_string(seq, size) << (contains ? " is present" : " is not present") << std::endl;
+#endif
         return contains;
     }
 }
